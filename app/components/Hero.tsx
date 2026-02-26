@@ -3,7 +3,19 @@ import { ArrowUpRight } from "lucide-react";
 import { Navbar } from "./Navbar";
 import Image from "next/image";
 import { motion } from "motion/react";
+import { authClient, useSession } from "../lib/auth-client";
 export function Hero() {
+  async function handleClick() {
+    const { data, error } = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/newsletter/inbox",
+    });
+    if (error) {
+      console.log(error);
+      return;
+    }
+  }
+
   return (
     <div>
       <div className="min-h-[70vh] w-full relative flex flex-col">
@@ -36,10 +48,13 @@ export function Hero() {
             No credit card required.
           </div>
           <div className="flex gap-6 mt-4">
-            <div className="w-40 h-12 flex gap-2 items-center justify-center hover:opacity-80 font-bold rounded-full bg-neutral-800 ">
+            <button
+              onClick={handleClick}
+              className="w-40 h-12 flex gap-2 items-center justify-center hover:opacity-80 font-bold rounded-full bg-neutral-800 "
+            >
               <div>Get Started</div>
               <ArrowUpRight size={20} />
-            </div>
+            </button>
             <div className="w-45 pl-2 h-12 hidden md:flex gap-2 items-center justify-center hover:opacity-80 font-semibold rounded-full bg-white text-black ">
               <div>See it in Action</div>
               <div className="px-1 py-1 rounded-full bg-black text-white">
