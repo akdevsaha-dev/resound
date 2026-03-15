@@ -19,15 +19,16 @@ import {
   MessageSquareText,
   ReceiptText,
   Settings,
-  Settings2,
   Star,
   Trash2,
-  User2,
 } from "lucide-react";
+import { useSideBarStore } from "../store/sidebarStore";
 
 export function AppSidebar() {
   const { data: session, isPending } = useSession();
-
+  const setActiveItem = useSideBarStore(
+    (state) => state.setActiveItem,
+  );
   if (isPending) return null;
 
   const name = session?.user?.name ?? "";
@@ -71,7 +72,11 @@ export function AppSidebar() {
         <div className="border-t border-t-neutral-800 group-data-[collapsible=icon]:block hidden mx-4"></div>
         <SidebarMenu>
           <SidebarMenuItem className="flex  justify-center">
-            <SidebarMenuButton tooltip={"Newsletter"} className=" ">
+            <SidebarMenuButton
+              onClick={() => setActiveItem("newsletter")}
+              tooltip={"Newsletter"}
+              className=" "
+            >
               <Inbox className="opacity-70" />
               Newsletters
             </SidebarMenuButton>
@@ -79,7 +84,7 @@ export function AppSidebar() {
         </SidebarMenu>
         <SidebarMenu>
           <SidebarMenuItem className="flex  justify-center">
-            <SidebarMenuButton tooltip={"Library"} className="">
+            <SidebarMenuButton onClick={() => setActiveItem("library")} tooltip={"Library"} className="">
               <Library className="opacity-70" />
               Library
             </SidebarMenuButton>
@@ -87,7 +92,7 @@ export function AppSidebar() {
         </SidebarMenu>
         <SidebarMenu>
           <SidebarMenuItem className="flex  justify-center">
-            <SidebarMenuButton tooltip={"starred"} className="">
+            <SidebarMenuButton onClick={() => setActiveItem("starred")} tooltip={"Starred"} className="">
               <Star className="opacity-70" />
               Starred
             </SidebarMenuButton>
@@ -95,7 +100,7 @@ export function AppSidebar() {
         </SidebarMenu>
         <SidebarMenu>
           <SidebarMenuItem className="flex  justify-center">
-            <SidebarMenuButton tooltip={"Bin"} className="">
+            <SidebarMenuButton onClick={() => setActiveItem("downloads")} tooltip={"Downloads"} className="">
               <Download className="opacity-70" />
               Downloads
             </SidebarMenuButton>
@@ -107,7 +112,7 @@ export function AppSidebar() {
         <div className="border-t border-t-neutral-800 group-data-[collapsible=icon]:block hidden mx-4"></div>
         <SidebarMenu className="mt-2">
           <SidebarMenuItem className="flex  justify-center">
-            <SidebarMenuButton tooltip={"Bin"} className="">
+            <SidebarMenuButton onClick={() => setActiveItem("billings")} tooltip={"Billings"} className="">
               <ReceiptText className="opacity-70" />
               Billings
             </SidebarMenuButton>
@@ -115,7 +120,7 @@ export function AppSidebar() {
         </SidebarMenu>
         <SidebarMenu>
           <SidebarMenuItem className="flex  justify-center">
-            <SidebarMenuButton tooltip={"Archive"} className="">
+            <SidebarMenuButton onClick={() => setActiveItem("archive")} tooltip={"Archive"} className="">
               <Archive className="opacity-70" />
               Archive
             </SidebarMenuButton>
@@ -123,7 +128,7 @@ export function AppSidebar() {
         </SidebarMenu>
         <SidebarMenu>
           <SidebarMenuItem className="flex  justify-center">
-            <SidebarMenuButton tooltip={"Bin"} className="">
+            <SidebarMenuButton onClick={() => setActiveItem("bin")} tooltip={"Bin"} className="">
               <Trash2 className="opacity-70" />
               Bin
             </SidebarMenuButton>

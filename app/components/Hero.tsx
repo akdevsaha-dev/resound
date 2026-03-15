@@ -3,19 +3,35 @@ import { ArrowUpRight } from "lucide-react";
 import { Navbar } from "./Navbar";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { authClient, useSession } from "../lib/auth-client";
+import { authClient } from "../lib/auth-client";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { SplitText } from "gsap/all";
 export function Hero() {
   async function handleClick() {
-    const { data, error } = await authClient.signIn.social({
+    await authClient.signIn.social({
       provider: "google",
       callbackURL: "/newsletter/inbox",
     });
-    if (error) {
-      console.log(error);
-      return;
-    }
   }
-
+  useGSAP(() => {
+    const magicSplit = new SplitText("#magic", { type: "chars" });
+    gsap.from(magicSplit.chars, {
+      stagger: 0.08,
+      ease: "expo.out",
+      duration: 1,
+      yPercent: 100,
+    });
+    gsap.fromTo(
+      "#magic-bg",
+      { x: "-100%" },
+      {
+        x: "0%",
+        duration: 2,
+        ease: "power2.out",
+      },
+    );
+  }, []);
   return (
     <div>
       <div className="min-h-[70vh] w-full relative flex flex-col">
@@ -35,8 +51,16 @@ export function Hero() {
         <div className="flex-1 flex flex-col items-center justify-center opacity-90 md:mt-20">
           <div className="md:max-w-3xl  max-w-100 text-3xl text-center md:text-6xl font-semibold antialiased">
             AI Powered{" "}
-            <span className="text-neutral-200 px-1 py-1 bg-neutral-600 rounded-lg md:leading-20 leading-12 border border-neutral-500 shadow shadow-neutral-700">
-              Newsletter
+            <span
+              id="magic"
+              className="relative inline-flex items-center overflow-hidden text-neutral-200 px-3 py-1 rounded-lg border border-neutral-500"
+            >
+              <span
+                id="magic-bg"
+                className="absolute inset-0 bg-neutral-600"
+              ></span>
+
+              <span className="relative z-10">Newsletter</span>
             </span>
             , Built to Save You Time.
           </div>
